@@ -4,6 +4,10 @@ import com.sachin.backend.entity.Employee;
 import com.sachin.backend.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -42,5 +46,10 @@ public class EmployeeService {
     // Delete employee
     public void deleteEmployee(Long id) {
         employeeRepository.deleteById(id);
+    }
+
+    public Page<Employee> getAllEmployeesPaginated(int page, int size, String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return employeeRepository.findAll(pageable);
     }
 }

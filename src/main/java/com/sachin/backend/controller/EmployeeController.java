@@ -3,6 +3,7 @@ package com.sachin.backend.controller;
 import com.sachin.backend.entity.Employee;
 import com.sachin.backend.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,5 +46,14 @@ public class EmployeeController {
     public ResponseEntity<String> deleteEmployee(@PathVariable Long id) {
         employeeService.deleteEmployee(id);
         return ResponseEntity.noContent().build(); // 204
+    }
+
+    // GET all employees with pagination
+    @GetMapping("/paginated")
+    public ResponseEntity<Page<Employee>> getAllEmployeesPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "id") String sortBy) {
+        return ResponseEntity.ok(employeeService.getAllEmployeesPaginated(page, size, sortBy));
     }
 }
